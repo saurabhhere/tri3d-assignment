@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/tri3d-assignment/static/css/main.f363dcee.css",
+    "main.js": "/tri3d-assignment/static/js/main.382c5809.js",
+    "index.html": "/tri3d-assignment/index.html",
+    "main.f363dcee.css.map": "/tri3d-assignment/static/css/main.f363dcee.css.map",
+    "main.382c5809.js.map": "/tri3d-assignment/static/js/main.382c5809.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.f363dcee.css",
+    "static/js/main.382c5809.js"
+  ]
+}
