@@ -1,11 +1,16 @@
-import {  useState } from 'react';
+import { Button, Fab, TextField } from '@mui/material';
+import { useState } from 'react';
 import './App.css';
+import FileUploadIcon from '@mui/icons-material/FileUpload';
+import DownloadIcon from '@mui/icons-material/Download';
 
 const App = () => {
 
-  const [height, setHeight] = useState(0);
-  const [width, setWidth] = useState(0);
+  const [height, setHeight] = useState();
+  const [width, setWidth] = useState();
+  const [img, setImg] = useState();
   const [imageName, setImageName] = useState("");
+  const [canDownload, setCanDownload] = useState(false);
 
   const handleImage = (e) => {
     var canvas = document.getElementById('inputCanvas');
@@ -15,6 +20,7 @@ const App = () => {
       var img = new Image();
       img.onload = () => {
         setImageName(e.target.files[0].name);
+        setImg(img);
         canvas.width = img.width;
         canvas.height = img.height;
         ctx.drawImage(img, 0, 0);
@@ -34,6 +40,7 @@ const App = () => {
     let size = new cv.Size(parseInt(height), parseInt(width));
     cv.resize(src, dst, size, 0, 0, cv.INTER_AREA);
     cv.imshow('outputCanvas', dst);
+    setCanDownload(true);
     src.delete(); dst.delete(); // to avoid memory leak
   }
 
@@ -47,14 +54,30 @@ const App = () => {
   }
 
   return (
-    <div className="App">
-      <input type="file" onChange={(e) => handleImage(e)} name="image" />
+    <div className="app">
+      <h1 className='heading'>Resize Image</h1>
+      <Button className='uploadBtn' variant="contained" component="label" endIcon={<FileUploadIcon />}>
+        {img == null ? "Upload Image" : "Upload new image"}
+        <input hidden type="file" onChange={(e) => handleImage(e)} name="image" />
+      </Button>
       <canvas id="inputCanvas"></canvas>
-      <input type="text" value={height} onChange={(e) => setHeight(e.target.value)} />
-      <input type="text" value={width} onChange={(e) => setWidth(e.target.value)} />
-      <button type="button" onClick={handleResize}>Resize</button>
-      <canvas id="outputCanvas"></canvas>
-      <button type="button" onClick={handleDownload}>Download</button>
+      {img != null &&
+        <>
+          <div className='horizontalFlex'>
+            <TextField id="outlined-basic" label="New height" variant="outlined" value={height} onChange={(e) => setHeight(e.target.value)} />
+            <TextField id="outlined-basic" label="New width" variant="outlined" value={width} onChange={(e) => setWidth(e.target.value)} />
+            <Button variant="outlined" onClick={handleResize}>Resize</Button>
+          </div>
+          {canDownload && <h3>Resized Image</h3>}
+          <canvas id="outputCanvas"></canvas>
+
+          {canDownload && <Fab onClick={handleDownload} color="primary" variant="extended">
+            <DownloadIcon sx={{ mr: 1 }} />
+            Download
+          </Fab>}
+        </>
+      }
+
     </div>
   );
 }
