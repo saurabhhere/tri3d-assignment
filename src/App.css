@@ -25,6 +25,10 @@
     margin: 20px;
 }
 
+.imageHeading {
+    margin-top: 20px;
+}
+
 .horizontalFlex {
     display: flex;
     justify-content: space-between;

@@ -1,4 +1,4 @@
-import { Button, Fab, TextField } from '@mui/material';
+import { Button, Fab, Paper, Stack, TextField } from '@mui/material';
 import { useState } from 'react';
 import './App.css';
 import FileUploadIcon from '@mui/icons-material/FileUpload';
@@ -50,7 +50,6 @@ const App = () => {
     link.download = 'resized_' + name + ".png";
     link.href = document.getElementById('outputCanvas').toDataURL("image/png");
     link.click();
-    link.delete();
   }
 
   return (
@@ -63,12 +62,13 @@ const App = () => {
       <canvas id="inputCanvas"></canvas>
       {img != null &&
         <>
-          <div className='horizontalFlex'>
-            <TextField id="outlined-basic" label="New height" variant="outlined" value={height} onChange={(e) => setHeight(e.target.value)} />
-            <TextField id="outlined-basic" label="New width" variant="outlined" value={width} onChange={(e) => setWidth(e.target.value)} />
-            <Button variant="outlined" onClick={handleResize}>Resize</Button>
-          </div>
-          {canDownload && <h3>Resized Image</h3>}
+          <Stack direction={{ xs: 'column', sm: 'row' }}
+            spacing={{ xs: 1, sm: 2, md: 4 }}>
+            <Paper elevation={0}><TextField id="outlined-basic" label="New height" variant="outlined" value={height} onChange={(e) => setHeight(e.target.value)} /></Paper>
+            <Paper elevation={0}><TextField id="outlined-basic" label="New width" variant="outlined" value={width} onChange={(e) => setWidth(e.target.value)} /></Paper>
+            <Paper elevation={0}><Button size="large" variant="outlined" onClick={handleResize}>Resize</Button></Paper>
+          </Stack>
+          {canDownload && <h3 className="imageHeading">Resized Image</h3>}
           <canvas id="outputCanvas"></canvas>
 
           {canDownload && <Fab onClick={handleDownload} color="primary" variant="extended">
